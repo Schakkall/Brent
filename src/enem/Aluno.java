@@ -33,7 +33,7 @@ public class Aluno {
 		this.email     = this.redimensionar(str, LEMAIL);
 	}
 
-	public Aluno( int matricula, String nome, String endereco, short idade, String sexo, String email){
+	public Aluno(int matricula, String nome, String endereco, short idade, String sexo, String email){
 		this.matricula = matricula;
 		this.nome      = this.redimensionar(nome, LNOME);
 		this.endereco  = this.redimensionar(endereco, LENDERECO);
