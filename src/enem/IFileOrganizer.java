@@ -1,4 +1,4 @@
-package OrganizadorBrent;
+package enem;
 /**
  * Interface genérica que define as operações de organizadores
  * de arquivos de alunos em disco.
