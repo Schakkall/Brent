@@ -22,9 +22,10 @@ public class Aluno {
 
 
 	public Aluno(){
+		this.matricula = 0;
+
 		String str = "";
 
-		this.matricula = 0;		
 		this.nome      = this.redimensionar(str, LNOME);
 		this.endereco  = this.redimensionar(str, LENDERECO);
 		this.idade     = 0;
