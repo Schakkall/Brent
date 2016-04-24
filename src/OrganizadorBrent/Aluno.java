@@ -117,13 +117,10 @@ public class Aluno {
 	private String redimensionar(String str, int tam){		
 		int dif = tam - str.length();
 
-		for (int i = 0; i < dif; i++) {
+		for (int i = 0; i < dif; i++) 
 			str += " ";
-		}
-
-		str = str.substring(0,tam);		
-
-		return str; 
+		
+		return str.substring(0,tam); 
 	}
 
 	public ByteBuffer getBuffer(){
