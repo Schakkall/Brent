@@ -10,8 +10,18 @@ package enem;
 
 public class OrganizadorBrent implements IFileOrganizer {
 	
+	private static long MAX_SIZE = 12000017;
+	
+	private long Hash(int key) {
+		return 0;
+	}
+	
+	private long Inc(int key) {
+		return (key % (MAX_SIZE - 2) + 1);
+	} 
+	
 	public static void main(String[] args) {
-		System.out.println("Hello World!");
+		System.out.println("Hello World!"); 
 	}
 
 	@Override
