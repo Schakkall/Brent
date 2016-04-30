@@ -137,6 +137,13 @@ public class Aluno {
 
 		return buf;
 	}
+	
+	public boolean equals(Aluno aluno) {
+		if (this.matricula == aluno.matricula)
+			return true;
+		else
+			return false;
+	}
 
 
 }
