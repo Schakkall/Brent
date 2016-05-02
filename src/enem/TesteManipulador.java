@@ -5,7 +5,7 @@ public class TesteManipulador {
 	public static void main(String[] args) {
 		
 		String path = "F:\\WorkSpace\\Brent\\aluno.db";
-		
+		///*
 		//Passo1 - Construção do arquivo base
 		IFileOrganizer arq1 = new ManipuladorSequencial(path);
 		
@@ -34,6 +34,9 @@ public class TesteManipulador {
 		arq1.addReg(e);
 		
 		arq1.delReg(27);
+		//*/
+		//IFileOrganizer arq1 = new OrganizadorBrent(path);
+		//System.out.println(arq1.getReg(29));
 
 	}
 

@@ -58,13 +58,13 @@ public class Aluno {
 
 		bufStr = new byte[LNOME];
 		buf.get(bufStr);
-		this.nome = new String(bufStr);
-		
-		this.idade = buf.getShort();		
+		this.nome = new String(bufStr);		
 
 		bufStr = new byte[LENDERECO];
 		buf.get(bufStr);
 		this.endereco = new String(bufStr);
+		
+		this.idade = buf.getShort();
 
 		bufStr = new byte[LSEXO];
 		buf.get(bufStr);
@@ -137,8 +137,8 @@ public class Aluno {
 
 		buf.putInt(this.matricula);
 		buf.put(this.nome.getBytes());
-		buf.putShort(this.idade);
 		buf.put(this.endereco.getBytes());
+		buf.putShort(this.idade);
 		buf.put(this.sexo.getBytes());
 		buf.put(this.email.getBytes());
 
@@ -156,9 +156,9 @@ public class Aluno {
 	
 	public String toString() {
 		return "Matricula:" + Integer.toString(this.matricula) + "\n" +
-			   "Nome     :" + this.nome                        + "\n" +
-			   "Idade    :" + Integer.toString(this.idade)     + "\n" +				
+			   "Nome     :" + this.nome                        + "\n" +				
 			   "Endereço :" + this.endereco                    + "\n" +
+			   "Idade    :" + Integer.toString(this.idade)     + "\n" +
 			   "Sexo     :" + this.sexo                        + "\n" +
 			   "E-mail   :" + this.email                       ;
 	}
