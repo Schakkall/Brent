@@ -9,7 +9,7 @@ import java.nio.channels.FileChannel;
 
 /**
  * Classe que implementa o método de Brent para organização
- * de arquivos de alunos em disco.
+ * direta de registros de alunos em arquivos.
  * 
  * @author  Simone Ris Santos Silva
  * @author  J. Eurique C. Ribeiro Jr
@@ -18,15 +18,20 @@ import java.nio.channels.FileChannel;
 
 public class OrganizadorBrent implements IFileOrganizer {
 	
-	private static long P = 11;
-	private static int  RECORD_SIZE = 157;
+	private static final int RECORD_SIZE = Aluno.RECORD_SIZE;
+	private static final long P = 11;
 	
-	private FileChannel canal;
+	private FileChannel channel;
 	
-	public OrganizadorBrent(String path) throws FileNotFoundException {
-		File file = new File(path);
-		RandomAccessFile raf = new RandomAccessFile(file, "rw");
-		this.canal = raf.getChannel();
+	public OrganizadorBrent(String path) {
+		try {
+			File file = new File(path);
+			RandomAccessFile raf = new RandomAccessFile(file, "rw");
+			this.channel = raf.getChannel();
+		} catch (FileNotFoundException e) {
+			System.out.println("Ocorreu um exceção ao tentar abrir o arquivo | public OrganizadorBrent(String path)\n"+e);
+			e.printStackTrace();
+		}
 	}
 	
 	private long hash(long key) {
@@ -38,12 +43,12 @@ public class OrganizadorBrent implements IFileOrganizer {
 	}
 
 	private Aluno readAluno(long index) throws IOException {
-		if ((index < 0) || (index > this.canal.size()))
+		if ((index < 0) || (index > this.channel.size()))
 			return null;// Out of bounds
-
+		
 		ByteBuffer buffer = ByteBuffer.allocate(RECORD_SIZE);
 
-		this.canal.read(buffer, index * RECORD_SIZE);
+		this.channel.read(buffer, index * RECORD_SIZE);
 		buffer.flip();
 
 		return new Aluno(buffer);
@@ -52,17 +57,17 @@ public class OrganizadorBrent implements IFileOrganizer {
 	private void simpleInsert(Aluno p, long pos) throws IOException {
 		ByteBuffer record = p.getBuffer();
 		
-		this.canal.position(0);
-		this.canal.write(record, pos * RECORD_SIZE);
+		this.channel.position(0);
+		this.channel.write(record, pos * RECORD_SIZE);
 	}
 	
-	private Cost calcCusto(Aluno p) throws IOException {
+	private Cost calcCost(Aluno p) throws IOException {
 		long pos = this.hash(p.getMatricula());
 		long i   = this.inc(p.getMatricula());
 		long c   = 1;
 				
 		while (!this.isEmpty(pos)) {
-			pos = this.hash(pos+i);
+			pos = this.hash(pos + i);
 			c   += 1;
 		}
 		
@@ -71,13 +76,17 @@ public class OrganizadorBrent implements IFileOrganizer {
 	
 	
 	private void solveCollision(Aluno p, long pos) throws IOException {
-		Cost a = this.calcCusto(p);
-		Cost b = this.calcCusto(readAluno(pos));
+		Aluno alunoAtPos = readAluno(pos);
 		
-		if (a.getAccessCost() > b.getAccessCost())
-			this.simpleInsert(p, b.getPosition());
-		else
-			this.simpleInsert(p, a.getPosition());
+		Cost case1 = this.calcCost(p);
+		Cost case2 = this.calcCost(alunoAtPos);
+		
+		if (case1.getAccessCost() <= case2.getAccessCost())
+			this.simpleInsert(p, case1.getPosition());
+		else {
+			this.simpleInsert(alunoAtPos, case2.getPosition());
+			this.simpleInsert(p, pos);
+		}	
 		
 	}
 	
@@ -98,8 +107,8 @@ public class OrganizadorBrent implements IFileOrganizer {
 				this.simpleInsert(p, pos);
 			else
 				this.solveCollision(p, pos);
-		} catch (IOException e) {
-			// TODO 
+		} catch (Exception e) {
+			System.out.println("Ocorreu uma exceção ao tentar adicionar o registro | public boolean addReg(Aluno p)\n"+e); 
 			e.printStackTrace();
 		}
 			
@@ -108,31 +117,48 @@ public class OrganizadorBrent implements IFileOrganizer {
 
 	@Override
 	public Aluno getReg(int matric) {
-		// TODO Auto-generated method stub
+		long pos = this.hash(matric);
+		long i   = this.inc(matric);
+		
+		long counter = P;
+		
+		try {
+			while ((this.readAluno(pos).getMatricula() != matric) && (--counter >= 0))
+				pos = this.hash(pos + i);
+			
+			if (counter < 0)
+				return null;
+			else
+				return readAluno(pos);
+			
+		} catch (Exception e) {
+			System.out.println("Ocorreu uma exceção ao tentar capturar o registro | public Aluno getReg(int matric)\n"+e); 
+			e.printStackTrace();
+		}
+		
 		return null;
 	}
 
 	@Override
 	public Aluno delReg(int matric) {
-		// TODO Auto-generated method stub
+		long pos = this.hash(matric);
+		long i   = this.inc(matric);
+		
+		long counter = P;
+		
+		try {
+			while ((this.readAluno(pos).getMatricula() != matric) && (--counter >= 0))
+				pos = this.hash(pos + i);
+			
+			if (counter >= 0)
+				this.simpleInsert(new Aluno(-1,"RECORD ERASED"), pos);
+			
+		} catch (Exception e) {
+			System.out.println("Ocorreu uma exceção ao tentar remover o registro | public Aluno delReg(int matric)\n"+e); 
+			e.printStackTrace();
+		}
+		
 		return null;
 	}
 	
-	public static void main(String[] args) throws FileNotFoundException {
-		System.out.println("Hello World!");
-		
-		OrganizadorBrent O = new OrganizadorBrent("F:\\WorkSpace\\Brent\\aluno.db");
-		Aluno e = new Aluno(21,"#2222#","*******",(short)00,"M","b@b.com.br");
-		O.addReg(e);
-		
-		/*
-		try {
-			System.out.println(O.calcCusto(e));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		*/
-	}
-
 }

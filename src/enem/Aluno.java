@@ -9,8 +9,10 @@ public class Aluno {
 	LNOME = 50, 
 	LENDERECO = 60, 
 	LSEXO = 1, 
-	LEMAIL = 40,
-	BUFFER_SIZE = 157;  
+	LEMAIL = 40;
+	
+	public static final short
+	RECORD_SIZE = 157;  
 
 
 	private int    matricula; // 04 bytes  
@@ -32,6 +34,13 @@ public class Aluno {
 		this.sexo      = this.redimensionar(str, LSEXO);
 		this.email     = this.redimensionar(str, LEMAIL);
 	}
+	
+	public Aluno(int matricula, String nome){
+		this();
+		this.matricula = matricula;
+		this.nome = this.redimensionar(nome, LNOME);
+	}
+	
 
 	public Aluno(int matricula, String nome, String endereco, short idade, String sexo, String email){
 		this.matricula = matricula;
@@ -50,12 +59,12 @@ public class Aluno {
 		bufStr = new byte[LNOME];
 		buf.get(bufStr);
 		this.nome = new String(bufStr);
+		
+		this.idade = buf.getShort();		
 
 		bufStr = new byte[LENDERECO];
 		buf.get(bufStr);
 		this.endereco = new String(bufStr);
-
-		this.idade = buf.getShort();
 
 		bufStr = new byte[LSEXO];
 		buf.get(bufStr);
@@ -124,7 +133,7 @@ public class Aluno {
 	}
 
 	public ByteBuffer getBuffer(){
-		ByteBuffer buf = ByteBuffer.allocate(BUFFER_SIZE);
+		ByteBuffer buf = ByteBuffer.allocate(RECORD_SIZE);
 
 		buf.putInt(this.matricula);
 		buf.put(this.nome.getBytes());
@@ -143,6 +152,15 @@ public class Aluno {
 			return true;
 		else
 			return false;
+	}
+	
+	public String toString() {
+		return "Matricula:" + Integer.toString(this.matricula) + "\n" +
+			   "Nome     :" + this.nome                        + "\n" +
+			   "Idade    :" + Integer.toString(this.idade)     + "\n" +				
+			   "Endereço :" + this.endereco                    + "\n" +
+			   "Sexo     :" + this.sexo                        + "\n" +
+			   "E-mail   :" + this.email                       ;
 	}
 
 
