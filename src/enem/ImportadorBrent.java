@@ -6,7 +6,7 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-public class ImportadorBrent {
+public class ImportadorBrent extends Tester {
 	
 	public static void main(String[] args) throws IOException {
 		
@@ -27,7 +27,7 @@ public class ImportadorBrent {
 		for (long i = 0; i < upperBound; i++) {
 			ByteBuffer sourceAluno = ByteBuffer.allocate(Aluno.RECORD_SIZE);
 			sourceAluno.position(0);
-			sourceChannel.read(sourceAluno);
+			sourceChannel.read(sourceAluno, i * Aluno.RECORD_SIZE);
 			sourceAluno.flip();
 			brtOrganizer.addReg(new Aluno(sourceAluno));
 		}
@@ -38,20 +38,6 @@ public class ImportadorBrent {
 		
 		sourceFile.close();
 		
-	}
-	
-	public static void printAnalysis(long iniTime, long endTime, String methodName) {
-		long total, min, hor;
-		
-		total = (iniTime - endTime);
-		System.out.println("Análise de tempo da "+ methodName +"\n");
-		System.out.println("Tempo total em milisegundos :"+ total);
-		min = total / 60000;
-		System.out.println("Tempo total em minutos :"+ min);
-		hor = min / 60;
-		System.out.println("Tempo de processamento das buscas (em horas) :"+ hor +"\n\n");		
-		
-	}
-	
+	}	
 
 }

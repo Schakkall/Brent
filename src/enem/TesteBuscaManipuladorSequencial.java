@@ -6,14 +6,14 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-public class TesteBuscaManipuladorSequencial {
+public class TesteBuscaManipuladorSequencial extends Tester{
 		
 	public static void main(String[] args) throws IOException {
 
 		String pathOrigem = "C:\\bd\\selected.db";
-		String pathBrent = "C:\\bd\\enem_seq.db";
+		String pathSequen = "C:\\bd\\enem_seq.db";
 
-		ManipuladorSequencial arq1 = new ManipuladorSequencial(pathBrent);
+		ManipuladorSequencial arq1 = new ManipuladorSequencial(pathSequen);
 		
 		File fOrigem = new File(pathOrigem);
 		RandomAccessFile fileOrigem = new RandomAccessFile(fOrigem, "r");
@@ -59,20 +59,7 @@ public class TesteBuscaManipuladorSequencial {
 		fileOrigem.close();
 
 	}	
-	
-	public static void printAnalysis(long iniTime, long endTime, String methodName) {
-		long total, min, hor;
-		
-		total = (iniTime - endTime);
-		System.out.println("Análise de tempo da "+ methodName +"\n");
-		System.out.println("Tempo total em milisegundos :"+ total);
-		min = total / 60000;
-		System.out.println("Tempo total em minutos :"+ min);
-		hor = min / 60;
-		System.out.println("Tempo de processamento das buscas (em horas) :"+ hor +"\n\n");		
-		
-	}
-		
+			
 	
 }
 

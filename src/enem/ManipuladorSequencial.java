@@ -48,7 +48,6 @@ public class ManipuladorSequencial implements IFileOrganizer {
 	}
 
 	private long binarySearch(int matric) throws IOException {
-		//System.out.println(matric);
 		long low = 0;
 		long high = (this.channel.size() / RECORD_SIZE);
 		long mid = 0;

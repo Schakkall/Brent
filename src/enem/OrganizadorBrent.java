@@ -19,7 +19,7 @@ import java.nio.channels.FileChannel;
 public class OrganizadorBrent implements IFileOrganizer {
 	
 	private static final int RECORD_SIZE = Aluno.RECORD_SIZE;
-	private static final long P = 12000027;
+	private static final long P = 12000017;
 	
 	private FileChannel channel;
 	
@@ -43,7 +43,7 @@ public class OrganizadorBrent implements IFileOrganizer {
 	}
 
 	private Aluno readAluno(long index) throws IOException {
-		if ((index < 0) || (index > this.channel.size() / RECORD_SIZE))
+		if ((index < 0) || (index > this.channel.size() ))
 			return null;// Out of bounds
 		
 		ByteBuffer buffer = ByteBuffer.allocate(RECORD_SIZE);
@@ -105,7 +105,7 @@ public class OrganizadorBrent implements IFileOrganizer {
 			else
 				this.solveCollision(p, pos);
 		} catch (Exception e) {
-			System.out.println("Ocorreu uma exceção ao tentar adicionar o registro | public boolean addReg(Aluno p)\n"+e); 
+			System.out.println("Ocorreu uma exceção ao tentar adicionar o registro | public boolean addReg(Aluno p)\n"+e+"\n"+p); 
 			e.printStackTrace();
 		}
 			

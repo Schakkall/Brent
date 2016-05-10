@@ -6,8 +6,9 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-public class TesteBuscaOrganizadorBrent {
+public class TesteBuscaOrganizadorBrent extends Tester{
 
+	
 	public static void main(String[] args) throws IOException {
 
 		String pathOrigem = "C:\\bd\\selected.db";
@@ -47,18 +48,5 @@ public class TesteBuscaOrganizadorBrent {
 		fileOrigem.close();
 
 	}	
-	
-	public static void printAnalysis(long iniTime, long endTime, String methodName) {
-		long total, min, hor;
-		
-		total = (iniTime - endTime);
-		System.out.println("Análise de tempo da "+ methodName +"\n");
-		System.out.println("Tempo total em milisegundos :"+ total);
-		min = total / 60000;
-		System.out.println("Tempo total em minutos :"+ min);
-		hor = min / 60;
-		System.out.println("Tempo de processamento das buscas (em horas) :"+ hor +"\n\n");		
-		
-	}
 		
 }
