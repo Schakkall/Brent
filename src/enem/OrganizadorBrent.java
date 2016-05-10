@@ -43,7 +43,7 @@ public class OrganizadorBrent implements IFileOrganizer {
 	}
 
 	private Aluno readAluno(long index) throws IOException {
-		if ((index < 0) || (index > this.channel.size() ))
+		if ((index < 0) || (index > this.channel.size() / RECORD_SIZE ))
 			return null;// Out of bounds
 		
 		ByteBuffer buffer = ByteBuffer.allocate(RECORD_SIZE);
