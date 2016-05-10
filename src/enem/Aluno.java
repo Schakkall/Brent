@@ -148,10 +148,7 @@ public class Aluno {
 	}
 	
 	public boolean equals(Aluno aluno) {
-		if (this.matricula == aluno.matricula)
-			return true;
-		else
-			return false;
+		return this.matricula == aluno.matricula;
 	}
 	
 	public String toString() {

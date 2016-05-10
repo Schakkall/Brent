@@ -19,7 +19,7 @@ import java.nio.channels.FileChannel;
 public class OrganizadorBrent implements IFileOrganizer {
 	
 	private static final int RECORD_SIZE = Aluno.RECORD_SIZE;
-	private static final long P = 11;
+	private static final long P = 12000027;
 	
 	private FileChannel channel;
 	
@@ -39,11 +39,11 @@ public class OrganizadorBrent implements IFileOrganizer {
 	}
 	
 	private long inc(long key) {
-		return ((key / P) % P);
+		return ((key % (P - 2)) + 1);
 	}
 
 	private Aluno readAluno(long index) throws IOException {
-		if ((index < 0) || (index > this.channel.size()))
+		if ((index < 0) || (index > this.channel.size() / RECORD_SIZE))
 			return null;// Out of bounds
 		
 		ByteBuffer buffer = ByteBuffer.allocate(RECORD_SIZE);
@@ -92,10 +92,7 @@ public class OrganizadorBrent implements IFileOrganizer {
 	
 	private boolean isEmpty(long index) throws IOException {
 		Aluno a = this.readAluno(index);
-		if ((a.getMatricula() == 0) || (a.getMatricula() == -1))
-			return true;
-		else
-			return false;
+		return ((a.getMatricula() == 0) || (a.getMatricula() == -1));
 	}
 	
 	@Override
