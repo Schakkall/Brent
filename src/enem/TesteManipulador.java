@@ -5,9 +5,11 @@ public class TesteManipulador {
 	public static void main(String[] args) {
 		
 		String path = "F:\\WorkSpace\\Brent\\aluno.db";
-		///*
+		IFileOrganizer arq1;
+		
+		
 		//Passo1 - Construção do arquivo base
-		IFileOrganizer arq1 = new ManipuladorSequencial(path);
+		arq1 = new ManipuladorSequencial(path);
 		
 		for (int i=10 ; i>=0; i--){
 		  	Aluno a = new Aluno(0, "Aluno"+i, "Rua "+i, (short)00, "M", "aluno"+i+"@ufs.br");
@@ -20,6 +22,7 @@ public class TesteManipulador {
 
 		e = new Aluno(27,"#27#","*******",(short)00,"M","aluno27@ufs.com.br");
 		arq1.addReg(e);
+		///*
 		e = new Aluno(18,"#18#","*******",(short)00,"M","aluno18@ufs.com.br");
 		arq1.addReg(e);
 		e = new Aluno(29,"#29#","*******",(short)00,"M","aluno29@ufs.com.br");

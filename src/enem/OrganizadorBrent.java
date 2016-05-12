@@ -19,7 +19,8 @@ import java.nio.channels.FileChannel;
 public class OrganizadorBrent implements IFileOrganizer {
 	
 	private static final int RECORD_SIZE = Aluno.RECORD_SIZE;
-	private static final long P = 12000017;
+	//private static final long P = 12000017;
+	private static final long P = 11;
 	
 	private FileChannel channel;
 	
@@ -39,7 +40,8 @@ public class OrganizadorBrent implements IFileOrganizer {
 	}
 	
 	private long inc(long key) {
-		return ((key % (P - 2)) + 1);
+		//return ((key % (P - 2)) + 1);
+		return ((key / P) % P);
 	}
 
 	private Aluno readAluno(long index) throws IOException {
@@ -61,7 +63,7 @@ public class OrganizadorBrent implements IFileOrganizer {
 		this.channel.write(record, pos * RECORD_SIZE);
 	}
 	
-	private Cost calcCost(Aluno p) throws IOException {
+	private Cost calcCost(Aluno p) throws IOException, FullFileException {
 		long pos = this.hash(p.getMatricula());
 		long i   = this.inc(p.getMatricula());
 		long c   = 1;
@@ -70,12 +72,15 @@ public class OrganizadorBrent implements IFileOrganizer {
 			pos = this.hash(pos + i);
 			c   += 1;
 		}
-		
+		/*
+		if (c == 1)
+			throw new FullFileException();
+		*/
 		return new Cost(pos,c);
 	}
 	
 	
-	private void solveCollision(Aluno p, long pos) throws IOException {
+	private void solveCollision(Aluno p, long pos) throws IOException, FullFileException {
 		Aluno alunoAtPos = readAluno(pos);
 		
 		Cost case1 = this.calcCost(p);
@@ -87,7 +92,6 @@ public class OrganizadorBrent implements IFileOrganizer {
 			this.simpleInsert(alunoAtPos, case2.getPosition());
 			this.simpleInsert(p, pos);
 		}	
-		
 	}
 	
 	private boolean isEmpty(long index) throws IOException {
@@ -100,7 +104,7 @@ public class OrganizadorBrent implements IFileOrganizer {
 		long pos = this.hash(p.getMatricula());
 		
 		try {
-			if (this.isEmpty(pos) )
+			if (this.isEmpty(pos))
 				this.simpleInsert(p, pos);
 			else
 				this.solveCollision(p, pos);

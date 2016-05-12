@@ -39,6 +39,7 @@ public class TesteBuscaOrganizadorBrent extends Tester{
 
 		for (i = 0; i < 1000; i++) {
 			Aluno c = arq1.getReg(matriculas[i]);
+			System.out.println(c);
 		}
 
 		fim = System.currentTimeMillis();

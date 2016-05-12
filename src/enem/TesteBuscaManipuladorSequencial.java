@@ -37,6 +37,7 @@ public class TesteBuscaManipuladorSequencial extends Tester{
 		ini = System.currentTimeMillis();		
 
 		for (i = 0; i < 1000; i++) {
+			@SuppressWarnings("unused")
 			Aluno c = arq1.getRegBin(matriculas[i]); 
 		}
 
@@ -49,6 +50,7 @@ public class TesteBuscaManipuladorSequencial extends Tester{
 		ini = System.currentTimeMillis();
 
 		for (i = 0; i < 1000; i++) {
+			@SuppressWarnings("unused")
 			Aluno c = arq1.getReg(matriculas[i]);
 		}
 
@@ -62,5 +64,3 @@ public class TesteBuscaManipuladorSequencial extends Tester{
 			
 	
 }
-
-

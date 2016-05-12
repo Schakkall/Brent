@@ -34,7 +34,7 @@ public class ManipuladorSequencial implements IFileOrganizer {
 		}
 
 	}
-
+	
 	Aluno readAluno(long index) throws IOException {
 		if ((index < 0) || (index > this.channel.size()))
 			return null;// Out of bounds
@@ -79,11 +79,11 @@ public class ManipuladorSequencial implements IFileOrganizer {
 			if (this.channel.size() == 0) {
 				this.channel.write(record, 0);
 			} else {
-				for (int i = 0; i < this.channel.size(); i += RECORD_SIZE) {
+				for (long i = 0; i < this.channel.size(); i += RECORD_SIZE) {
 					Aluno bufferAluno = readAluno(i);
 
 					if (bufferAluno.getMatricula() >= aluno.getMatricula()) {					
-						for (int j = i; j < this.channel.size(); j += RECORD_SIZE) {
+						for (long j = i; j < this.channel.size(); j += RECORD_SIZE) {
 						
 							bufferAluno = readAluno(j);												
 
@@ -108,14 +108,14 @@ public class ManipuladorSequencial implements IFileOrganizer {
 	@Override
 	public Aluno delReg(int matric) {
 		try {
-			int newSize = (int) (channel.size() - RECORD_SIZE);
+			long newSize = channel.size() - RECORD_SIZE;
 			this.channel.position(0);
 
-			for (int i = 0; i < channel.size(); i += RECORD_SIZE) {
+			for (long i = 0; i < channel.size(); i += RECORD_SIZE) {
 				Aluno aluno = readAluno(i);
 				
 				if (aluno.getMatricula() == matric) {
-					for (int j = i + RECORD_SIZE; j < channel.size(); j += RECORD_SIZE) {
+					for (long j = i + RECORD_SIZE; j < channel.size(); j += RECORD_SIZE) {
 						ByteBuffer bufb = ByteBuffer.allocate(RECORD_SIZE);
 
 						channel.read(bufb, j);
@@ -136,7 +136,7 @@ public class ManipuladorSequencial implements IFileOrganizer {
 	public Aluno getReg(int matric) {
 		try {
 			this.channel.position(0);
-			for (int i = 0; i < channel.size(); i += RECORD_SIZE) {
+			for (long i = 0; i < channel.size(); i += RECORD_SIZE) {
 				Aluno aluno = readAluno(i);
 				if (aluno.getMatricula() == matric) {
 					return aluno;
