@@ -66,16 +66,16 @@ public class OrganizadorBrent implements IFileOrganizer {
 	private Cost calcCost(Aluno p) throws IOException, FullFileException {
 		long pos = this.hash(p.getMatricula());
 		long i   = this.inc(p.getMatricula());
-		long c   = 1;
+		long c   = 1, counter = P;
 				
-		while (!this.isEmpty(pos)) {
+		while (!this.isEmpty(pos) && (--counter >= 0)) {
 			pos = this.hash(pos + i);
 			c   += 1;
 		}
-		/*
+		
 		if (c == 1)
 			throw new FullFileException();
-		*/
+		
 		return new Cost(pos,c);
 	}
 	
