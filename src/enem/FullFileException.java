@@ -6,7 +6,7 @@ public class FullFileException extends Exception {
 	
 	@Override
 	public String getMessage() {
-		return "Ilegal Operation. The file is full.";
+		return "Illegal Operation. The file is full.";
 	}
 
 }
